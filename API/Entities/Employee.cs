@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace API.Entities
 {
     public class Employee
@@ -11,6 +6,7 @@ namespace API.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string StartWorkYear { get; set; }
-        public Department Department { get; set; }
+        public int? DepartmentID { get; set; }
+        public Department department { get; set; }
     }
 }

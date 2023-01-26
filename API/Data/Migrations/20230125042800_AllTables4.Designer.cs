@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230121113250_AllTables")]
-    partial class AllTables
+    [Migration("20230125042800_AllTables4")]
+    partial class AllTables4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,16 +26,13 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ManagerID")
+                    b.Property<int?>("ManagerID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ManagerID")
-                        .IsUnique();
 
                     b.ToTable("Departments");
                 });
@@ -44,6 +41,9 @@ namespace API.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("DepartmentID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("FirstName")
@@ -56,6 +56,8 @@ namespace API.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentID");
 
                     b.ToTable("Employees");
                 });
@@ -87,7 +89,7 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<string>("Date")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("EndTime")
@@ -121,15 +123,13 @@ namespace API.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("API.Entities.Department", b =>
+            modelBuilder.Entity("API.Entities.Employee", b =>
                 {
-                    b.HasOne("API.Entities.Employee", "Manager")
-                        .WithOne("Department")
-                        .HasForeignKey("API.Entities.Department", "ManagerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("API.Entities.Department", "department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentID");
 
-                    b.Navigation("Manager");
+                    b.Navigation("department");
                 });
 
             modelBuilder.Entity("API.Entities.EmployeeShift", b =>
@@ -145,11 +145,6 @@ namespace API.Data.Migrations
                     b.Navigation("Employee");
 
                     b.Navigation("Shift");
-                });
-
-            modelBuilder.Entity("API.Entities.Employee", b =>
-                {
-                    b.Navigation("Department");
                 });
 #pragma warning restore 612, 618
         }

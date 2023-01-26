@@ -1,5 +1,6 @@
 using API.Data;
 using API.DOTs;
+using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +19,7 @@ namespace API.Controllers
         public async Task<bool> Login(LoginDot login)
         {
             var user = await context.Users.AnyAsync(x => x.UserName == login.username && x.Password == login.password);
-            return user ? true : false;
+            return user;
         }
     }
 }

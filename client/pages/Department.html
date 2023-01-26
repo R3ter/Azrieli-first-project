@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Table V01</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="./../scripts/login.js"></script>
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://colorlib.com/etc/tb/Table_Responsive_v1/vendor/bootstrap/css/bootstrap.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://colorlib.com/etc/tb/Table_Responsive_v1/fonts/font-awesome-4.7.0/css/font-awesome.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://colorlib.com/etc/tb/Table_Responsive_v1/vendor/animate/animate.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://colorlib.com/etc/tb/Table_Responsive_v1/vendor/perfect-scrollbar/perfect-scrollbar.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="vendor/perfect-scrollbar/perfect-scrollbar.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://colorlib.com/etc/tb/Table_Responsive_v1/css/util.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://colorlib.com/etc/tb/Table_Responsive_v1/css/main.css"
+    />
+    <link rel="stylesheet" type="text/css" href="./../css/navbar.css" />
+
+    <meta name="robots" content="noindex, follow" />
+    <script nonce="4ce87d34-13b7-46e7-a369-5578df0560dd">
+      (function (w, d) {
+        !(function (f, g, h, i) {
+          f[h] = f[h] || {};
+          f[h].executed = [];
+          f.zaraz = { deferred: [], listeners: [] };
+          f.zaraz.q = [];
+          f.zaraz._f = function (j) {
+            return function () {
+              var k = Array.prototype.slice.call(arguments);
+              f.zaraz.q.push({ m: j, a: k });
+            };
+          };
+          for (const l of ["track", "set", "debug"]) f.zaraz[l] = f.zaraz._f(l);
+          f.zaraz.init = () => {
+            var m = g.getElementsByTagName(i)[0],
+              n = g.createElement(i),
+              o = g.getElementsByTagName("title")[0];
+            o && (f[h].t = g.getElementsByTagName("title")[0].text);
+            f[h].x = Math.random();
+            f[h].w = f.screen.width;
+            f[h].h = f.screen.height;
+            f[h].j = f.innerHeight;
+            f[h].e = f.innerWidth;
+            f[h].l = f.location.href;
+            f[h].r = g.referrer;
+            f[h].k = f.screen.colorDepth;
+            f[h].n = g.characterSet;
+            f[h].o = new Date().getTimezoneOffset();
+            if (f.dataLayer)
+              for (const s of Object.entries(
+                Object.entries(dataLayer).reduce((t, u) => ({
+                  ...t[1],
+                  ...u[1],
+                }))
+              ))
+                zaraz.set(s[0], s[1], { scope: "page" });
+            f[h].q = [];
+            for (; f.zaraz.q.length; ) {
+              const v = f.zaraz.q.shift();
+              f[h].q.push(v);
+            }
+            n.defer = !0;
+            for (const w of [localStorage, sessionStorage])
+              Object.keys(w || {})
+                .filter((y) => y.startsWith("_zaraz_"))
+                .forEach((x) => {
+                  try {
+                    f[h]["z_" + x.slice(7)] = JSON.parse(w.getItem(x));
+                  } catch {
+                    f[h]["z_" + x.slice(7)] = w.getItem(x);
+                  }
+                });
+            n.referrerPolicy = "origin";
+            n.src =
+              "/cdn-cgi/zaraz/s.js?z=" +
+              btoa(encodeURIComponent(JSON.stringify(f[h])));
+            m.parentNode.insertBefore(n, m);
+          };
+          ["complete", "interactive"].includes(g.readyState)
+            ? zaraz.init()
+            : f.addEventListener("DOMContentLoaded", zaraz.init);
+        })(w, d, "zarazData", "script");
+      })(window, document);
+    </script>
+    <nav id="navbar" class="nav">
+      <div class="container">
+        <div class="logo">
+          <a id="welcome" href="#"></a>
+        </div>
+        <div id="mainListDiv" class="main_list">
+          <ul class="navlinks">
+            <li><a href="./Department.html">Departments</a></li>
+            <li><a href="./Employee.html">Employees</a></li>
+            <li><a href="./Shifts.html">Shifts</a></li>
+            <li><a href="./../index.html">logout</a></li>
+          </ul>
+        </div>
+        <span class="navTrigger">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+      </div>
+    </nav>
+  </head>
+  <body onload="getDepartmentData();onloadNav()">
+    <div class="limiter">
+      <div class="container-table100">
+        <div class="wrap-table100">
+          <div class="table100">
+            <table style="cursor: default">
+              <thead>
+                <tr class="table100-head" style="cursor: default">
+                  <th class="column1">id</th>
+                  <th class="column2">Name</th>
+                  <th class="column3">Manager</th>
+                  <th class="column4">Edit</th>
+                  <th class="column5">Remove</th>
+                  <th class="column6">
+                    <button
+                      style="
+                        background-color: rgb(6, 139, 6);
+                        font-size: x-large;
+                        padding: 7px;
+                        padding-right: 14px;
+                        padding-left: 14px;
+                        border-radius: 360px;
+                      "
+                    >
+                      +
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+
+    <script src="vendor/bootstrap/js/popper.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="vendor/select2/select2.min.js"></script>
+
+    <script src="js/main.js"></script>
+
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-23581568-13");
+    </script>
+
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js/vaafb692b2aea4879b33c060e79fe94621666317369993"
+      integrity="sha512-0ahDYl866UMhKuYcW078ScMalXqtFJggm7TmlUtp0UlD4eQk0Ixfnm5ykXKvGJNFjLMoortdseTfsRT8oCfgGA=="
+      data-cf-beacon='{"rayId":"78d377decd69e3cb","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.11.3","si":100}'
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
