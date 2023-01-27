@@ -23,7 +23,7 @@ namespace API.Controllers
                                 select new
                                 {
                                     Department = a,
-                                    Employee = c != null ? new { firstName = c.FirstName, lastName = c.LastName } : null
+                                    Employee = c != null ? new { id = c.Id, firstName = c.FirstName, lastName = c.LastName } : null
 
                                 }).ToListAsync();
             return StatusCode(StatusCodes.Status200OK, result);

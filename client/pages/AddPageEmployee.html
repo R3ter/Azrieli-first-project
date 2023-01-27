@@ -256,134 +256,63 @@
       }
     </style>
   </head>
-  <body onload="setTitle();setInputs();setVal();">
+  <body>
     <div class="testbox">
       <form action="/">
         <div class="banner">
-          <h1 id="title">Edit Department</h1>
+          <h1>New Employee</h1>
         </div>
-        <div id="inputs" class="colums">
+        <div class="colums">
           <div class="item">
-            <label for="fname"> Name <span>*</span></label>
-            <input id="name" type="text" required />
+            <label for="fname"> First Name <span>*</span></label>
+            <input id="FirstName" type="text" required />
           </div>
           <div class="item">
-            <label for="fname"> Manager ID<span>*</span></label>
-            <input id="managerID" type="number" required />
+            <label for="fname"> Last Name<span>*</span></label>
+            <input id="LastName" type="text" required />
+          </div>
+          <div class="item">
+            <label for="fname"> Start Work Year<span>*</span></label>
+            <input id="StartWorkYear" type="number" required />
+          </div>
+          <div class="item">
+            <label for="fname"> Department ID<span>*</span></label>
+            <input id="DepartmentID" type="number" required />
           </div>
           <div class="btn-block">
-            <button onclick="edit(event)" type="submit">Submit</button>
+            <button onclick="addEmployee(event)" type="submit">Submit</button>
           </div>
         </div>
       </form>
     </div>
-  </body>
-  <script>
-    const setInputs = () => {
-      const inputs = document.getElementById("inputs");
-
-      const searchParams = new URLSearchParams(location.search);
-
-      const section = searchParams.get("section");
-      console.log(section);
-      if (section == "department") {
-        inputs.innerHTML =
-          ["name", "managerID"]
-            .map(
-              (e) => `<div class="item">
-            <label for="fname"> ${e} <span>*</span></label>
-            <input id="${e}" type="text" required />
-          </div>`
-            )
-            .join() +
-          `
-          <div class="btn-block">
-            <button onclick="edit(event)" type="submit">Submit</button>
-          </div>`;
-      } else if (section == "employee") {
-        inputs.innerHTML =
-          ["FirstName", "LastName", "StartWorkYear", "DepartmentID"]
-            .map(
-              (e) => `<div class="item">
-            <label for="fname"> ${e} <span>*</span></label>
-            <input id="${e}" type="text" required />
-          </div>`
-            )
-            .join() +
-          `
-          <div class="btn-block">
-            <button onclick="editDep(event)" type="submit">Submit</button>
-          </div>`;
-      }
-    };
-    const setVal = () => {
-      const searchParams = new URLSearchParams(location.search);
-      const inputs = document.getElementById("inputs");
-      for (const e in inputs.children) {
-        inputs.children[e].children[1].value = searchParams.get(
-          inputs.children[e].children[1]?.id
-        );
-      }
-      const name = searchParams.get("name");
-      const managerID = searchParams.get("managerID");
-      console.log(searchParams.get("managerID"));
-      document.getElementById("name").value = name;
-      document.getElementById("managerID").value = managerID;
-    };
-    const setTitle = () => {
-      const searchParams = new URLSearchParams(location.search);
-      const section = searchParams.get("section");
-      document.getElementById("title").innerHTML = "edit " + section;
-    };
-    const edit = async (e) => {
-      e.preventDefault();
-      const searchParams = new URLSearchParams(location.search);
-      const id = searchParams.get("id");
-      const name = document.getElementById("name").value;
-      const managerID = document.getElementById("managerID").value;
-      const departments = await fetch(
-        "https://localhost:7133/api/" + searchParams.get("section"),
-        {
-          method: "PUT",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json;charset=utf-8",
-          },
-          body: JSON.stringify({
-            id,
-            name,
-            managerID,
-          }),
+    <script>
+      const addEmployee = async (e) => {
+        e.preventDefault();
+        const LastName = document.getElementById("LastName").value;
+        const FirstName = document.getElementById("FirstName").value;
+        const StartWorkYear = document.getElementById("StartWorkYear").value;
+        const DepartmentID = document.getElementById("DepartmentID").value;
+        if (LastName == "" && FirstName == "") {
+          return false;
         }
-      );
-      window.location.href = "./Department.html";
-    };
-    const editDep = async (e) => {
-      e.preventDefault();
-      const searchParams = new URLSearchParams(location.search);
-      const id = searchParams.get("id");
-      const FirstName = document.getElementById("FirstName").value;
-      const LastName = document.getElementById("LastName").value;
-      const StartWorkYear = document.getElementById("StartWorkYear").value;
-      const DepartmentID = document.getElementById("DepartmentID").value;
-      const departments = await fetch(
-        "https://localhost:7133/api/" + searchParams.get("section"),
-        {
-          method: "PUT",
+        e.target.innerHTML = `Please wait....`;
+        e.target.disabled = true;
+        const departments = await fetch("https://localhost:7133/api/Employee", {
+          method: "POST",
           headers: {
             Accept: "application/json, text/plain, */*",
             "Content-Type": "application/json;charset=utf-8",
           },
           body: JSON.stringify({
-            id,
             LastName,
             FirstName,
             StartWorkYear,
             DepartmentID,
           }),
-        }
-      );
-      window.location.href = "./employee.html";
-    };
-  </script>
+        });
+        await departments.json();
+        window.location.href = "./Employee.html";
+      };
+    </script>
+  </body>
 </html>

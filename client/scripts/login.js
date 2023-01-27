@@ -42,7 +42,7 @@ const getDepartmentData = async (e) => {
       <button
       onclick="window.location.href = './EditPage.html?name=${name}&managerID=${
         employee?.id
-      }&id=${id}'";
+      }&section=department&id=${id}'";
       style="
       padding: 10px;
       background-color: rgb(80, 197, 218);
@@ -92,12 +92,14 @@ const getEmployeeData = async () => {
           background-color: rgb(80, 197, 218);
           border-radius: 10px;
         "
+        onclick="window.location.href = './EditPage.html?FirstName=${firstName}&LastName=${lastName}&StartWorkYear=${startWorkYear}&DepartmentID=${department?.id}&section=employee&id=${id}'";
       >
         Edit
       </button>
     </td>
     <td class="column7">
       <button
+      onclick='deleteEmployee(${id})'
         style="
           padding: 10px;
           background-color: rgb(218, 80, 87);
@@ -125,7 +127,6 @@ const getShiftData = async () => {
         employee: { firstName, lastName },
         shift: { date, startTime, endTime },
       }) => {
-        console.log(date);
         return ` <tr style="cursor: default">
     <td class="column1" style="cursor: default">
       ${id}
@@ -171,6 +172,19 @@ const onloadNav = async () => {
   } else {
     window.location.href = "./../index.html";
   }
+};
+const deleteEmployee = async (id) => {
+  const departments = await fetch("https://localhost:7133/api/employee", {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({
+      id,
+    }),
+  });
+  window.location.href = "./Employee.html";
 };
 const deleteDepartment = async (id) => {
   const departments = await fetch("https://localhost:7133/api/department", {
