@@ -28,26 +28,33 @@ const getDepartmentData = async (e) => {
   const text = await (
     await departments.json()
   )
-    .map(({ department: { id, name }, employee: { firstName, lastName } }) => {
+    .map(({ department: { id, name }, employee }) => {
+      console.log(employee);
       return ` <tr style="cursor: default">
     <td class="column1" style="cursor: default">
       ${id}
     </td>
     <td class="column2">${name}</td>
-    <td class="column3">${firstName}  ${lastName}</td>
+    <td class="column3">${
+      employee ? employee?.firstName + " " + employee?.lastName : "no manager"
+    }</td>
     <td class="column4">
       <button
-        style="
-          padding: 10px;
-          background-color: rgb(80, 197, 218);
-          border-radius: 10px;
-        "
+      onclick="window.location.href = './EditPage.html?name=${name}&managerID=${
+        employee?.id
+      }&id=${id}'";
+      style="
+      padding: 10px;
+      background-color: rgb(80, 197, 218);
+      border-radius: 10px;
+      "
       >
-        Edit
+      Edit
       </button>
-    </td>
-    <td class="column5">
+      </td>
+      <td class="column5">
       <button
+      onclick="deleteDepartment(${id})"
         style="
           padding: 10px;
           background-color: rgb(218, 80, 87);
@@ -164,4 +171,63 @@ const onloadNav = async () => {
   } else {
     window.location.href = "./../index.html";
   }
+};
+const deleteDepartment = async (id) => {
+  const departments = await fetch("https://localhost:7133/api/department", {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({
+      id,
+    }),
+  });
+  window.location.href = "./Department.html";
+};
+const addDepartment = async (e) => {
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  const managerID = document.getElementById("manager").value;
+  if (name == "" || managerID == "") {
+    return false;
+  }
+  e.target.innerHTML = `Please wait....`;
+  e.target.disabled = true;
+  const departments = await fetch("https://localhost:7133/api/department", {
+    method: "POST",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({
+      name,
+      managerID,
+    }),
+  });
+  await departments.json();
+  window.location.href = "./Department.html";
+};
+const editDepartment = async (e) => {
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  const managerID = document.getElementById("manager").value;
+  if (name == "" || managerID == "") {
+    return false;
+  }
+  e.target.innerHTML = `Please wait....`;
+  e.target.disabled = true;
+  const departments = await fetch("https://localhost:7133/api/department", {
+    method: "POST",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({
+      name,
+      managerID,
+    }),
+  });
+  await departments.json();
+  window.location.href = "./Department.html";
 };
